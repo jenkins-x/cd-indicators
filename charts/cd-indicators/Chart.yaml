@@ -1,0 +1,14 @@
+apiVersion: v2
+name: cd-indicators
+description: Continuous Delivery Indicators for Jenkins X
+icon: https://raw.githubusercontent.com/jenkins-x/jenkins-x-website/master/images/logo/jenkinsx-icon-color.svg
+home: https://github.com/jenkins-x/cd-indicators
+version: 0.0.1
+appVersion: latest
+sources:
+- https://github.com/jenkins-x/cd-indicators
+dependencies:
+- name: postgresql
+  version: 10.3.13
+  repository: https://charts.bitnami.com/bitnami
+  condition: postgresql.useInternalInstance
