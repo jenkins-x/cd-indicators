@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cdindicators.fullname" . }}
+  labels:
+    {{- include "cdindicators.labels" . | nindent 4 }}
+    {{- with .Values.deployment.labels }}
+    {{ tpl (toYaml .) $ | trim | indent 4 }}
+    {{- end }}
+  {{- with .Values.deployment.annotations }}
+  annotations: {{- tpl (toYaml .) $ | trim | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  revisionHistoryLimit: {{ .Values.deployment.revisionHistoryLimit }}
+  selector:
+    matchLabels: {{- include "cdindicators.labels.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cdindicators.labels" . | nindent 8 }}
+        {{- with .Values.pod.labels }}
+        {{ tpl (toYaml .) $ | trim | indent 8 }}
+        {{- end }}
+      {{- with .Values.pod.annotations }}
+      annotations: {{- tpl (toYaml .) $ | trim | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        {{- with .Values.image.pullPolicy }}
+        imagePullPolicy: {{ . }}
+        {{- end }}
+        args:
+        - -postgres-uri=postgres://{{ if .Values.postgresql.useInternalInstance }}{{ include "cdindicators.fullname" . }}-postgresql:5432{{ else }}{{ .Values.postgresql.postgresqlHost }}:{{ .Values.postgresql.postgresqlPort }}{{ end }}/{{ .Values.postgresql.postgresqlDatabase }}?{{ range $k,$v := .Values.config.postgres.extraParams }}{{ $k }}={{ $v }}&{{ end }}
+        {{- with .Values.config.gitOwners }}
+        - -git-owners={{ join . "," }}
+        {{- end }}
+        - -resync-interval={{ .Values.config.resyncInterval }}
+        - -log-level={{ .Values.config.logLevel }}
+        - -log-level-db={{ .Values.config.postgres.logLevel }}
+        env:
+        - name: XDG_CONFIG_HOME
+          value: /home/jenkins      
+        - name: LIGHTHOUSE_HMAC_KEY
+          valueFrom:
+            secretKeyRef: {{- .Values.secrets.lighthouse.hmac.secretKeyRef | toYaml | nindent 14 }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secrets.postgres.password.secretKeyRef.name | default (include "cdindicators.fullname" .) }}
+              key: {{ .Values.secrets.postgres.password.secretKeyRef.key }}
+        - name: PGUSER
+          value: {{ .Values.postgresql.postgresqlUser | quote }}
+        {{- if .Values.pod.env }}
+        {{- range $pkey, $pval := .Values.pod.env }}
+        - name: {{ $pkey }}
+          value: {{ quote $pval }}
+        {{- end }}
+        {{- end }}
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+        {{- with .Values.pod.resources }}
+        resources: {{- toYaml . | trim | nindent 10 }}
+        {{- end }}
+      {{- with .Values.pod.securityContext }}
+      securityContext: {{- toYaml . | trim | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cdindicators.fullname" . }}
+      enableServiceLinks: {{ .Values.pod.enableServiceLinks }}
+      {{- with .Values.pod.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ . }}
+      {{- end }}
+      {{- with .Values.pod.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ . }}
+      {{- end }}
+      {{- with .Values.pod.affinity }}
+      affinity: {{- tpl (toYaml .) $ | trim | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pod.nodeSelector }}
+      nodeSelector: {{- tpl (toYaml .) $ | trim | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pod.tolerations }}
+      tolerations: {{- tpl (toYaml .) $ | trim | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pod.hostAliases }}
+      hostAliases: {{- tpl (toYaml .) $ | trim | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pod.schedulerName }}
+      schedulerName: {{ tpl . $ | trim }}
+      {{- end }}

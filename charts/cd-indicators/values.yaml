@@ -1,0 +1,102 @@
+# Default values for the Helm Chart
+
+fullnameOverride:
+nameOverride:
+
+config:
+  # gitOwners is an array of "organizations" from which indicators should be collected
+  # leave empty to collect from all organizations found
+  gitOwners: []
+  resyncInterval: 1h
+  logLevel: INFO
+  postgres:
+    logLevel: WARN
+    # extraParams is a map of extra parameters used when connecting to postgres
+    extraParams: {}
+      # sslmode: verify-ca
+      # pool_max_conns: 10
+
+postgresql:
+  useInternalInstance: true
+  postgresqlHost:
+  postgresqlPort: 5432
+  postgresqlDatabase: indicators
+  postgresqlUsername: postgres
+  postgresqlPassword: password
+  existingSecret:
+  image:
+    tag: 13.1.0-debian-10-r38
+
+# this is the label defined in Grafana sidecar dashboards/datasources loader
+# used to retrieve all configmaps which contains Grafana dashboards/datasources
+grafana:
+  dashboards:
+    label: jenkins-x.io/grafana-dashboard
+    value: "1"
+  datasources:
+    label: jenkins-x.io/grafana-datasource
+    value: "1"
+
+secrets:
+  lighthouse:
+    hmac:
+      secretKeyRef:
+        name: lighthouse-hmac-token
+        key: hmac
+  postgres:
+    password:
+      secretKeyRef:
+        name:
+        key: postgresql-password
+
+image:
+  repository: gcr.io/jenkinsxio/cd-indicators
+  # If no tag, fallback to the Chart's AppVersion
+  tag:
+  pullPolicy:
+
+deployment:
+  replicas: 1
+  revisionHistoryLimit: 2
+  labels: {}
+  annotations: {}
+
+pod:
+  resources:
+    requests:
+      cpu: "0.2"
+      memory: 256M
+    limits:
+      cpu: "1"
+      memory: 512M
+  labels: {}
+  annotations: {}
+  activeDeadlineSeconds:
+  enableServiceLinks: false
+  terminationGracePeriodSeconds:
+  affinity: {}
+  nodeSelector: {}
+  tolerations: []
+  hostAliases: []
+  schedulerName:
+  securityContext:
+    fsGroup: 1000
+  env: {}
+
+service:
+  port: 80
+  type:
+  loadBalancerIP:
+  labels: {}
+  annotations: {}
+
+serviceAccount:
+  # allow additional annotations to be added to the ServiceAccount
+  # such as for workload identity on clouds
+  annotations: {}
+
+role:
+  rules:
+  - apiGroups: ["jenkins.io"]
+    resources: ["pipelineactivities", "releases"]
+    verbs: ["list", "watch", "get"]
