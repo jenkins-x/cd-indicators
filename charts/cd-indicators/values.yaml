@@ -18,6 +18,7 @@ config:
 
 postgresql:
   useInternalInstance: true
+  # see https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml for the postgresql values
   postgresqlHost:
   postgresqlPort: 5432
   postgresqlDatabase: indicators
