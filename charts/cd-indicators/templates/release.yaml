@@ -1,0 +1,137 @@
+{{- if and (.Capabilities.APIVersions.Has "jenkins.io/v1/Release") (hasKey .Values.jx "releaseCRD") (.Values.jx.releaseCRD)}}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-26T16:01:37Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      fix: publish images
+    sha: bd02e8a80dfcfad8fb5291cb25250abb26f27786
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      feat: collect deployments
+    sha: eb8a2a17227aed99a66a73be46f7e6c081b8eaa7
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      fix: add missing dot files
+    sha: c4245425e15fb0a0f44842998ca3e3af00e4106b
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      fix: work with latest changelog
+    sha: c9998d8d22eca5f0049d20ccd8493a059ebd771d
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: remove old sed
+    sha: 8e6c360c1029c4cadeafaae829ace460360b1689
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      fix: try fix chart version replacement
+    sha: 948e0f5aa884073caa431e986fb5ee9354900e6c
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: avoid eager version change in Chart.yaml
+    sha: 93aa0fb361dc31a929be9ba3607f7b81f637c1cf
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: fix the version replacement in chart
+    sha: 15a09e4ff78045dbd80b0473e08352b1ed40f073
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: retrigger
+    sha: 4739da05cf37c3799d74da14cc0cdb255f41f4c7
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: add lighthouse pipelines
+    sha: 7d6d41ba88a203a5c026d855dfbe88bd7d9b78be
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      fix: various fixes
+    sha: e8b13a6953d8d42575ab16a66c1775734786d653
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      chore: import code
+    sha: 2f49892938285a16e9765ac1c7695b2d9b462fc9
+  gitHttpUrl: https://github.com/jenkins-x/cd-indicators
+  gitOwner: jenkins-x
+  gitRepository: cd-indicators
+  name: '{{ .Chart.Name }}'
+  version: 0.0.3
+status: {}
+ 
+{{- end }}
