@@ -1,0 +1,37 @@
+{{- if and (.Capabilities.APIVersions.Has "jenkins.io/v1/Release") (hasKey .Values.jx "releaseCRD") (.Values.jx.releaseCRD)}}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-26T16:09:23Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      chore: disable arm 32 bit for now
+    sha: e6146a05c97e31e3e7a053811ef956ee9fa61588
+  - author:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    branch: master
+    committer:
+      email: james.strachan@gmail.com
+      name: James Strachan
+    message: |
+      fix: publish images
+    sha: bd02e8a80dfcfad8fb5291cb25250abb26f27786
+  gitHttpUrl: https://github.com/jenkins-x/cd-indicators
+  gitOwner: jenkins-x
+  gitRepository: cd-indicators
+  name: '{{ .Chart.Name }}'
+  version: 0.0.4
+status: {}
+ 
+{{- end }}
