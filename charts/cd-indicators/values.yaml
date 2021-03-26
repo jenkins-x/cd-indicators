@@ -16,6 +16,10 @@ config:
       # sslmode: verify-ca
       # pool_max_conns: 10
 
+jx:
+  # whether to create a Release CRD when installing charts with Release CRDs included
+  releaseCRD: true
+
 postgresql:
   useInternalInstance: true
   # see https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml for the postgresql values
