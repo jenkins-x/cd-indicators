@@ -33,13 +33,13 @@ spec:
         imagePullPolicy: {{ . }}
         {{- end }}
         args:
-        - -postgres-uri=postgres://{{ if .Values.postgresql.useInternalInstance }}{{ include "cdindicators.fullname" . }}-postgresql:5432{{ else }}{{ .Values.postgresql.postgresqlHost }}:{{ .Values.postgresql.postgresqlPort }}{{ end }}/{{ .Values.postgresql.postgresqlDatabase }}?{{ range $k,$v := .Values.config.postgres.extraParams }}{{ $k }}={{ $v }}&{{ end }}
+        - --postgres-uri=postgres://{{ if .Values.postgresql.useInternalInstance }}{{ include "cdindicators.fullname" . }}-postgresql:5432{{ else }}{{ .Values.postgresql.postgresqlHost }}:{{ .Values.postgresql.postgresqlPort }}{{ end }}/{{ .Values.postgresql.postgresqlDatabase }}?{{ range $k,$v := .Values.config.postgres.extraParams }}{{ $k }}={{ $v }}&{{ end }}
         {{- with .Values.config.gitOwners }}
-        - -git-owners={{ join . "," }}
+        - --git-owners={{ join . "," }}
         {{- end }}
-        - -resync-interval={{ .Values.config.resyncInterval }}
-        - -log-level={{ .Values.config.logLevel }}
-        - -log-level-db={{ .Values.config.postgres.logLevel }}
+        - --resync-interval={{ .Values.config.resyncInterval }}
+        - --log-level={{ .Values.config.logLevel }}
+        - --log-level-db={{ .Values.config.postgres.logLevel }}
         env:
         - name: XDG_CONFIG_HOME
           value: /home/jenkins      
@@ -52,7 +52,7 @@ spec:
               name: {{ .Values.secrets.postgres.password.secretKeyRef.name | default (include "cdindicators.fullname" .) }}
               key: {{ .Values.secrets.postgres.password.secretKeyRef.key }}
         - name: PGUSER
-          value: {{ .Values.postgresql.postgresqlUser | quote }}
+          value: {{ .Values.postgresql.postgresqlUsername | quote }}
         {{- if .Values.pod.env }}
         {{- range $pkey, $pval := .Values.pod.env }}
         - name: {{ $pkey }}

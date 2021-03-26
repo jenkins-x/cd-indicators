@@ -67,8 +67,19 @@ func (c *ReleaseCollector) storeRelease(r *jenkinsv1.Release) {
 
 	contributors := strset.New()
 	for _, commit := range r.Spec.Commits {
-		if commit.Author != nil {
-			contributors.Add(commit.Author.Login)
+		if login := extractUserLogin(commit.Author); login != "" {
+			contributors.Add(login)
+		}
+		if login := extractUserLogin(commit.Committer); login != "" {
+			contributors.Add(login)
+		}
+	}
+	for _, pr := range r.Spec.PullRequests {
+		if login := extractUserLogin(pr.User); login != "" {
+			contributors.Add(login)
+		}
+		if login := extractUserLogin(pr.ClosedBy); login != "" {
+			contributors.Add(login)
 		}
 	}
 
@@ -87,4 +98,16 @@ func (c *ReleaseCollector) storeRelease(r *jenkinsv1.Release) {
 		log.WithError(err).Error("Failed to store release")
 		return
 	}
+}
+
+func extractUserLogin(user *jenkinsv1.UserDetails) string {
+	if user == nil {
+		return ""
+	}
+
+	if user.Login != "" {
+		return user.Login
+	}
+
+	return ""
 }
