@@ -24,6 +24,7 @@ type Collector struct {
 	pipelineActivityCollector *PipelineActivityCollector
 	releaseCollector          *ReleaseCollector
 	pullRequestCollector      *PullRequestCollector
+	deploymentCollector       *DeploymentCollector
 }
 
 func (c *Collector) Start(ctx context.Context) error {
@@ -49,6 +50,12 @@ func (c *Collector) Start(ctx context.Context) error {
 		LighthouseHandler: c.LighthouseHandler,
 		Logger:            c.Logger,
 	}
+	c.deploymentCollector = &DeploymentCollector{
+		GitOwners:         c.GitOwners,
+		Store:             c.Store.Deployments,
+		LighthouseHandler: c.LighthouseHandler,
+		Logger:            c.Logger,
+	}
 
 	if err := c.pipelineActivityCollector.Start(ctx); err != nil {
 		return fmt.Errorf("failed to start PipelineActivity Collector: %w", err)
@@ -58,6 +65,9 @@ func (c *Collector) Start(ctx context.Context) error {
 	}
 	if err := c.pullRequestCollector.Start(ctx); err != nil {
 		return fmt.Errorf("failed to start PullRequest Collector: %w", err)
+	}
+	if err := c.deploymentCollector.Start(ctx); err != nil {
+		return fmt.Errorf("failed to start Deployment Collector: %w", err)
 	}
 
 	return nil

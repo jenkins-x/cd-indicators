@@ -12,6 +12,7 @@ type Store struct {
 	Pipelines    *PipelineStore
 	PullRequests *PullRequestStore
 	Releases     *ReleaseStore
+	Deployments  *DeploymentStore
 }
 
 func New(ctx context.Context, connPool *pgxpool.Pool) (*Store, error) {
@@ -25,6 +26,9 @@ func New(ctx context.Context, connPool *pgxpool.Pool) (*Store, error) {
 		Releases: &ReleaseStore{
 			connPool: connPool,
 		},
+		Deployments: &DeploymentStore{
+			connPool: connPool,
+		},
 	}
 
 	err := (&migration.Migrator{
@@ -33,6 +37,7 @@ func New(ctx context.Context, connPool *pgxpool.Pool) (*Store, error) {
 		store.Pipelines,
 		store.PullRequests,
 		store.Releases,
+		store.Deployments,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to run store migrations: %w", err)
