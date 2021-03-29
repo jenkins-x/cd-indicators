@@ -1,0 +1,37 @@
+{{- if and (.Capabilities.APIVersions.Has "jenkins.io/v1/Release") (hasKey .Values.jx "releaseCRD") (.Values.jx.releaseCRD)}}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-29T13:34:54Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      fix: always trim the version prefix
+    sha: b8f585b6cbd368e9edd488f0e0ef41932c39860f
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      chore: add a first (home) dashboard
+    sha: 87cb25f2d787b5789e8174ac8d3e0ab087139fac
+  gitHttpUrl: https://github.com/jenkins-x/cd-indicators
+  gitOwner: jenkins-x
+  gitRepository: cd-indicators
+  name: '{{ .Chart.Name }}'
+  version: 0.0.9
+status: {}
+ 
+{{- end }}

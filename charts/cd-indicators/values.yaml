@@ -63,7 +63,7 @@ secrets:
 image:
   repository: gcr.io/jenkinsxio/cd-indicators
   # If no tag, fallback to the Chart's AppVersion
-  tag:
+  tag: 0.0.9
   pullPolicy:
 
 deployment:
