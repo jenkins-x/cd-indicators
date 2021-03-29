@@ -2,6 +2,7 @@ package collector
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/jenkins-x/cd-indicators/store"
@@ -86,7 +87,7 @@ func (c *ReleaseCollector) storeRelease(r *jenkinsv1.Release) {
 	release := store.Release{
 		Owner:        r.Spec.GitOwner,
 		Repository:   r.Spec.GitRepository,
-		Version:      r.Spec.Version,
+		Version:      strings.TrimPrefix(r.Spec.Version, "v"),
 		Contributors: contributors.List(),
 		ReleaseTime:  r.CreationTimestamp.Time.In(time.UTC),
 	}
