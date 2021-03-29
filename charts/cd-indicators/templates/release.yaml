@@ -1,0 +1,40 @@
+{{- if and (.Capabilities.APIVersions.Has "jenkins.io/v1/Release") (hasKey .Values.jx "releaseCRD") (.Values.jx.releaseCRD)}}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-29T12:02:22Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      fix: chart
+    sha: 820366cd3778d97d84f7ae2dcd0fac11c3bad424
+  - author:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    branch: master
+    committer:
+      email: v.behar@free.fr
+      name: Vincent Behar
+    message: |
+      fix: remove default postgres tag
+
+      because it gets set to the cd-indicators version at release time
+      we'll set this in the versionstream values instead
+    sha: 322da38820049b5517712ef986775762236bbfb7
+  gitHttpUrl: https://github.com/jenkins-x/cd-indicators
+  gitOwner: jenkins-x
+  gitRepository: cd-indicators
+  name: '{{ .Chart.Name }}'
+  version: 0.0.7
+status: {}
+ 
+{{- end }}
