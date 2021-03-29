@@ -41,6 +41,15 @@ grafana:
   datasources:
     label: jenkins-x.io/grafana-datasource
     value: "1"
+    postgres:
+      # these are the "jsonData" settings for the postgres datasource
+      # see https://grafana.com/docs/grafana/latest/datasources/postgres/
+      settings:
+        sslmode: disable
+        maxOpenConns: 10
+        maxIdleConns: 2
+        connMaxLifetime: 14400
+        postgresVersion: 1200
 
 secrets:
   lighthouse:
