@@ -30,7 +30,7 @@ postgresql:
   postgresqlPassword: password
   existingSecret:
   image:
-    tag: 13.1.0-debian-10-r38
+    tag: 0.0.5
 
 # this is the label defined in Grafana sidecar dashboards/datasources loader
 # used to retrieve all configmaps which contains Grafana dashboards/datasources
@@ -66,7 +66,7 @@ secrets:
 image:
   repository: gcr.io/jenkinsxio/cd-indicators
   # If no tag, fallback to the Chart's AppVersion
-  tag:
+  tag: 0.0.5
   pullPolicy:
 
 deployment:
