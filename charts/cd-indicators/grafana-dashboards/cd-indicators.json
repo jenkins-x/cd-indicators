@@ -1,0 +1,187 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 113,
+    "links": [],
+    "panels": [
+        {
+            "datasource": null,
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 2,
+            "options": {
+                "content": "![logo](https://raw.githubusercontent.com/jenkins-x/jx-docs/master/assets/icons/logo.svg)",
+                "mode": "markdown"
+            },
+            "pluginVersion": "7.4.3",
+            "targets": [
+                {
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "",
+            "type": "text"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 6,
+                "x": 0,
+                "y": 8
+            },
+            "id": 5,
+            "options": {
+                "folderId": null,
+                "maxItems": 20,
+                "query": "",
+                "showHeadings": false,
+                "showRecentlyViewed": false,
+                "showSearch": false,
+                "showStarred": true,
+                "tags": []
+            },
+            "pluginVersion": "7.4.3",
+            "targets": [
+                {
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Your favorite dashboards",
+            "type": "dashlist"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 6,
+                "x": 6,
+                "y": 8
+            },
+            "id": 4,
+            "options": {
+                "maxItems": 20,
+                "query": "",
+                "showHeadings": false,
+                "showRecentlyViewed": false,
+                "showSearch": true,
+                "showStarred": false,
+                "tags": [
+                    "cd-indicators"
+                ]
+            },
+            "pluginVersion": "7.4.3",
+            "targets": [
+                {
+                    "queryType": "randomWalk",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "CD Indicators Dashboards",
+            "type": "dashlist"
+        },
+        {
+            "cacheTimeout": null,
+            "datasource": "-- Grafana --",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 8
+            },
+            "id": 7,
+            "interval": null,
+            "links": [],
+            "options": {
+                "content": "# Continuous Delivery Indicators for Jenkins X\n\n- [GitHub repository](https://github.com/jenkins-x/cd-indicators)\n\n",
+                "mode": "markdown"
+            },
+            "pluginVersion": "7.4.3",
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "",
+            "type": "text"
+        }
+    ],
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [
+        "jenkins-x",
+        "cd-indicators"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-6h",
+        "to": "now"
+    },
+    "timepicker": {
+        "hidden": true
+    },
+    "timezone": "browser",
+    "title": "Continuous Delivery Indicators",
+    "uid": "cd-indicators",
+    "version": 1
+}
