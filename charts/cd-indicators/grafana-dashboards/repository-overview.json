@@ -1,0 +1,2350 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 3,
+    "iteration": 1617110912236,
+    "links": [],
+    "panels": [
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 19,
+            "panels": [],
+            "title": "Deployment Status",
+            "type": "row"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "noValue": "-",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "relative_release_time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "s"
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 1
+                            },
+                            {
+                                "id": "color"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "yellow",
+                                            "value": 604800
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 2592000
+                                        },
+                                        {
+                                            "color": "dark-red",
+                                            "value": 7776000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 0,
+                "y": 1
+            },
+            "id": 11,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "/.*/",
+                    "values": true
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - release_time) as relative_release_time\nFROM\n  releases\nWHERE\n  owner='$owner' AND repository='$repository'\nORDER by release_time DESC\nLIMIT 1;\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Latest Release",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "noValue": "-",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "relative_deployment_time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "s"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "thresholds"
+                                }
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "yellow",
+                                            "value": 604800
+                                        },
+                                        {
+                                            "color": "light-orange",
+                                            "value": 1209600
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 1814400
+                                        },
+                                        {
+                                            "color": "dark-red",
+                                            "value": 2592000
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 3,
+                "y": 1
+            },
+            "id": 13,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "/.*/",
+                    "values": true
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment LIKE 'stag%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Staging Release",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "noValue": "-",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "relative_deployment_time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "s"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "thresholds"
+                                }
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "yellow",
+                                            "value": 604800
+                                        },
+                                        {
+                                            "color": "light-orange",
+                                            "value": 1209600
+                                        },
+                                        {
+                                            "color": "dark-orange",
+                                            "value": 1814400
+                                        },
+                                        {
+                                            "color": "dark-red",
+                                            "value": 2592000
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 6,
+                "y": 1
+            },
+            "id": 15,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "/.*/",
+                    "values": true
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment LIKE 'prod%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Prod Release",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "light-yellow",
+                                "value": 1
+                            },
+                            {
+                                "color": "light-orange",
+                                "value": 2
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 3
+                            },
+                            {
+                                "color": "semi-dark-red",
+                                "value": 4
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 5
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 4,
+                "x": 9,
+                "y": 1
+            },
+            "id": 17,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "/^version$/",
+                    "values": true
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "WITH deployed_releases AS (\n\tselect \n\t  d.owner,\n\t\td.repository,\n\t\tmax(string_to_array(d.version, '.')::int[]) as version,\n\t\tmax(r.release_time) as release_time,\n\t\tmax(d.deployment_time) as deployment_time\n\tfrom\n\t\tdeployments d\n\tleft join\n\t\treleases r\n\ton r.version = d.version\n\twhere d.environment like 'prod%'\n\tgroup by d.owner, d.repository\n\torder by owner, repository asc\n\t)\nSELECT\n\tr.repository,\n\tcount(r.version) as version\nFROM\n\treleases r,\n\tdeployed_releases d\nWHERE\n  r.owner = d.owner AND\n  r.owner='$owner' AND\n\tr.repository = d.repository AND\n\tr.repository='$repository' AND\n\tr.release_time > d.release_time\nGROUP BY r.owner, r.repository\nORDER BY r.owner, r.repository;",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Undeployed Releases",
+            "type": "stat"
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 5
+            },
+            "id": 27,
+            "panels": [],
+            "title": "Period Activity",
+            "type": "row"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 0,
+                "y": 6
+            },
+            "id": 21,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  count (distinct author)\nFROM\n  pull_requests\nWHERE\n  $__timeFilter(creation_time) AND owner='$owner' AND repository='$repository'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Contributors",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 2,
+                "x": 3,
+                "y": 6
+            },
+            "id": 38,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  sum (reviews)\nFROM\n  pull_requests\nWHERE\n  $__timeFilter(creation_time) AND owner='$owner' AND repository='$repository'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Reviews",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 5,
+                "y": 6
+            },
+            "id": 46,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  pull_requests\nWHERE\n  ($__timeFilter(creation_time) OR $__timeFilter(ready_for_review_time) OR $__timeFilter(approved_time) OR $__timeFilter(merged_time)) AND owner='$owner' AND repository='$repository'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Pull Requests",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "decimals": 1,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 8,
+                "y": 6
+            },
+            "id": 50,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  approved_time as \"time\",\n  time_to_review\nFROM\n  pull_requests\nWHERE\n  $__timeFilter(approved_time) AND owner='$owner' AND repository='$repository'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Time To Review",
+            "type": "stat"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "fill": 8,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 4,
+                "w": 13,
+                "x": 11,
+                "y": 6
+            },
+            "hiddenSeries": false,
+            "id": 52,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.4.5",
+            "pointradius": 2,
+            "points": true,
+            "renderer": "flot",
+            "repeatDirection": "h",
+            "seriesOverrides": [
+                {
+                    "$$hashKey": "object:302",
+                    "alias": "closed",
+                    "color": "#C4162A"
+                },
+                {
+                    "$$hashKey": "object:303",
+                    "alias": "merged",
+                    "color": "#73BF69"
+                },
+                {
+                    "$$hashKey": "object:304",
+                    "alias": "open",
+                    "color": "#FF9830"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  case when state='open' then creation_time when state='closed' and merged_time is not null then merged_time else creation_time end as \"time\",\n  case when state='open' then 'open' when state='closed' and merged_time is not null then 'merged' else 'closed' end as \"metric\",\n  1 as \"value\"\nFROM pull_requests\nWHERE\n  ($__timeFilter(creation_time) OR $__timeFilter(merged_time)) AND owner='$owner' AND repository='$repository'\nORDER BY 1,2",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Pull Requests",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transformations": [],
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:323",
+                    "format": "none",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                },
+                {
+                    "$$hashKey": "object:324",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "custom": {},
+                    "decimals": 0,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "red",
+                                "value": 85
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "median"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Average"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "stddev"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Variation"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 0,
+                "y": 10
+            },
+            "hideTimeOverride": false,
+            "id": 34,
+            "interval": "",
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "text": {}
+            },
+            "pluginVersion": "7.4.5",
+            "repeatDirection": "h",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [
+                        {
+                            "params": [
+                                "$__interval",
+                                "none"
+                            ],
+                            "type": "time"
+                        }
+                    ],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "WITH one AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\trelease_time,\n\t\tlag(release_time) OVER (ORDER BY owner, repository, release_time) AS previous_release_time,\n\t\trelease_time - lag(release_time) OVER (ORDER BY owner, repository, release_time) AS diff\n\tFROM releases\n\t),\n\ttwo AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\trelease_time,\n\t\tcase when extract (epoch from diff) > 0 then extract (epoch from diff) else 0 end as diff_seconds\n\tFROM one\n\t)\nSELECT\n  percentile_cont(0.5) WITHIN GROUP (ORDER BY diff_seconds) as median,\n  stddev_pop(diff_seconds) as stddev\nFROM two\nWHERE\n  $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "time_to_release"
+                                ],
+                                "type": "column"
+                            },
+                            {
+                                "params": [
+                                    "variance"
+                                ],
+                                "type": "aggregate"
+                            },
+                            {
+                                "params": [
+                                    "time_to_release"
+                                ],
+                                "type": "alias"
+                            }
+                        ]
+                    ],
+                    "table": "releases",
+                    "timeColumn": "release_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Release Interval",
+            "transformations": [],
+            "type": "gauge"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 5,
+                "y": 10
+            },
+            "id": 40,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  releases\nWHERE\n  $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Releases",
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "decimals": 1,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "dark-red",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 25
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "green",
+                                "value": 75
+                            }
+                        ]
+                    },
+                    "unit": "percentunit"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 8,
+                "y": 10
+            },
+            "id": 44,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "hide": false,
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "WITH r AS (\n\tselect \n\t\tcount(version) as releases\n\tfrom\n\t\treleases\n\twhere $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'\n\t),\n\td AS (\n\tselect\n\t\tcount(distinct(version)) as deployed_releases\n\tfrom\n\t\tdeployments\n\twhere environment like 'prod%' AND $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository'\n\t)\nSELECT\n\td.deployed_releases::float/r.releases::float as ratio\nFROM\n\tr, d;",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Deployed Releases",
+            "transformations": [],
+            "type": "stat"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "displayName": "release",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "fill": 8,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 4,
+                "w": 13,
+                "x": 11,
+                "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 54,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.4.5",
+            "pointradius": 2,
+            "points": true,
+            "renderer": "flot",
+            "repeatDirection": "h",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  release_time AS \"time\",\n  1\nFROM releases\nWHERE\n  $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'\nORDER BY 1,2",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Releases",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transformations": [],
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:418",
+                    "format": "none",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                },
+                {
+                    "$$hashKey": "object:419",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "custom": {},
+                    "decimals": 0,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "red",
+                                "value": 85
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "median"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Average"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "stddev"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Variation"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 0,
+                "y": 14
+            },
+            "hideTimeOverride": false,
+            "id": 36,
+            "interval": "",
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "text": {}
+            },
+            "pluginVersion": "7.4.5",
+            "repeatDirection": "h",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [
+                        {
+                            "params": [
+                                "$__interval",
+                                "none"
+                            ],
+                            "type": "time"
+                        }
+                    ],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "WITH one AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tlag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS previous_deployment_time,\n\t\tdeployment_time - lag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS diff\n\tFROM deployments\n\t),\n\ttwo AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tcase when extract (epoch from diff) > 0 then extract (epoch from diff) else 0 end as diff_seconds\n\tFROM one\n\t)\nSELECT\n  percentile_cont(0.5) WITHIN GROUP (ORDER BY diff_seconds) as median,\n  stddev_pop(diff_seconds) as stddev\nFROM two\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment like 'prod%'",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "time_to_release"
+                                ],
+                                "type": "column"
+                            },
+                            {
+                                "params": [
+                                    "variance"
+                                ],
+                                "type": "aggregate"
+                            },
+                            {
+                                "params": [
+                                    "time_to_release"
+                                ],
+                                "type": "alias"
+                            }
+                        ]
+                    ],
+                    "table": "releases",
+                    "timeColumn": "release_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Deployment Interval",
+            "transformations": [],
+            "type": "gauge"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 5,
+                "y": 14
+            },
+            "id": 42,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "hide": false,
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment LIKE 'stag%'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                },
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "hide": true,
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  start_time as \"time\",\n  split_part(environment, '-', 1) as metric,\n  count(1) as value\nFROM\n  deployments\nWHERE\n  $__timeFilter(start_time) AND repository='$repository'\nGROUP BY 2,1\n",
+                    "refId": "B",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Stag. Deployments",
+            "transformations": [],
+            "type": "stat"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 3,
+                "x": 8,
+                "y": 14
+            },
+            "id": 43,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.4.5",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "hide": false,
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment LIKE 'prod%'\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                },
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "hide": true,
+                    "metricColumn": "none",
+                    "queryType": "randomWalk",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  start_time as \"time\",\n  split_part(environment, '-', 1) as metric,\n  count(1) as value\nFROM\n  deployments\nWHERE\n  $__timeFilter(start_time) AND repository='$repository'\nGROUP BY 2,1\n",
+                    "refId": "B",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Prod Deployments",
+            "transformations": [],
+            "type": "stat"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "fill": 8,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 4,
+                "w": 13,
+                "x": 11,
+                "y": 14
+            },
+            "hiddenSeries": false,
+            "id": 53,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.4.5",
+            "pointradius": 2,
+            "points": true,
+            "renderer": "flot",
+            "repeatDirection": "h",
+            "seriesOverrides": [
+                {
+                    "$$hashKey": "object:513",
+                    "alias": "/stag.*/",
+                    "color": "#73BF69"
+                },
+                {
+                    "$$hashKey": "object:514",
+                    "alias": "/prod.*/",
+                    "color": "#C4162A"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  deployment_time AS \"time\",\n  environment AS metric,\n  1\nFROM deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository'\nORDER BY 1,2",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Deployments",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transformations": [],
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:527",
+                    "format": "none",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                },
+                {
+                    "$$hashKey": "object:528",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 18
+            },
+            "id": 29,
+            "panels": [],
+            "title": "Pipelines",
+            "type": "row"
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "custom": {},
+                    "decimals": 1,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 33
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 9,
+                "x": 0,
+                "y": 19
+            },
+            "id": 25,
+            "options": {
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "text": {}
+            },
+            "pluginVersion": "7.4.5",
+            "repeatDirection": "h",
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time) AND owner='$owner' AND repository='$repository'\nORDER BY metric ASC",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Pipelines Duration",
+            "transformations": [],
+            "type": "gauge"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {},
+                    "custom": {},
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": []
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "fill": 8,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 10,
+                "w": 12,
+                "x": 9,
+                "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 23,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.4.5",
+            "pointradius": 2,
+            "points": true,
+            "renderer": "flot",
+            "repeatDirection": "h",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time) AND owner='$owner' AND repository='$repository'\nORDER BY 1,2",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Pipelines Duration",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transformations": [],
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:808",
+                    "format": "s",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:809",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "datasource": "Indicators",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "custom": {
+                        "align": "center",
+                        "displayMode": "color-text",
+                        "filterable": true
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 15
+                            },
+                            {
+                                "color": "red",
+                                "value": 30
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "rate"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 135
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 9,
+                "x": 0,
+                "y": 29
+            },
+            "id": 32,
+            "options": {
+                "frameIndex": 1,
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "7.4.5",
+            "repeatDirection": "h",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "repository",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n\t(p.failed::decimal/p.total::decimal)*100 as rate,\n\tp.context\nFROM\n  (\n  SELECT \n    count(1) AS total, \n    count(1) FILTER (WHERE status='Succeeded') AS success, \n    count(1) FILTER (WHERE status!='Succeeded') AS failed, \n    owner,\n    repository, \n    context \n  FROM pipelines \n  WHERE $__timeFilter(start_time) AND owner='$owner' AND repository='$repository' GROUP BY owner,repository,context\n  ) as p\nORDER BY rate DESC",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "duration"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "table": "pipelines",
+                    "timeColumn": "start_time",
+                    "timeColumnType": "timestamp",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Pipelines Failure Rate",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "failure_rate",
+                        "binary": {
+                            "left": "failure",
+                            "operator": "/",
+                            "reducer": "sum",
+                            "right": "total"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true
+                    }
+                }
+            ],
+            "type": "table"
+        }
+    ],
+    "refresh": false,
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [
+        "cd-indicators"
+    ],
+    "templating": {
+        "list": [
+            {
+                "allValue": null,
+                "current": {
+                    "selected": false,
+                    "text": "",
+                    "value": ""
+                },
+                "datasource": "Indicators",
+                "definition": "select distinct(owner) from pipelines WHERE $__timeFilter(start_time)",
+                "description": null,
+                "error": {},
+                "hide": 0,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "owner",
+                "options": [],
+                "query": "",
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "selected": false,
+                    "text": "",
+                    "value": ""
+                },
+                "datasource": "Indicators",
+                "definition": "select distinct(repository) from pipelines WHERE owner='$owner' AND $__timeFilter(start_time)",
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "repository",
+                "options": [],
+                "query": "select distinct(repository) from pipelines WHERE owner='$owner' AND $__timeFilter(start_time)",
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now-14d",
+        "to": "now"
+    },
+    "timepicker": {
+        "hidden": false,
+        "refresh_intervals": [
+            "10m",
+            "1h"
+        ],
+        "time_options": [
+            "24h",
+            "7d",
+            "14d",
+            "30d",
+            "90d"
+        ],
+        "type": "timepicker"
+    },
+    "timezone": "",
+    "title": "Repository Overview",
+    "uid": "repository-overview",
+    "version": 5
+}
