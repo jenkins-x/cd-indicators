@@ -37,12 +37,13 @@ func (c *Collector) Start(ctx context.Context) error {
 		Logger:         c.Logger,
 	}
 	c.releaseCollector = &ReleaseCollector{
-		JXClient:       c.JXClient,
-		Namespace:      c.Namespace,
-		ResyncInterval: c.ResyncInterval,
-		GitOwners:      c.GitOwners,
-		Store:          c.Store.Releases,
-		Logger:         c.Logger,
+		JXClient:          c.JXClient,
+		Namespace:         c.Namespace,
+		ResyncInterval:    c.ResyncInterval,
+		GitOwners:         c.GitOwners,
+		Store:             c.Store.Releases,
+		LighthouseHandler: c.LighthouseHandler,
+		Logger:            c.Logger,
 	}
 	c.pullRequestCollector = &PullRequestCollector{
 		GitOwners:         c.GitOwners,
