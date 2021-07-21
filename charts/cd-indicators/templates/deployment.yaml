@@ -35,7 +35,7 @@ spec:
         args:
         - --postgres-uri=postgres://{{ if .Values.postgresql.useInternalInstance }}{{ include "cdindicators.fullname" . }}-postgresql:5432{{ else }}{{ .Values.postgresql.postgresqlHost }}:{{ .Values.postgresql.postgresqlPort }}{{ end }}/{{ .Values.postgresql.postgresqlDatabase }}?{{ range $k,$v := .Values.config.postgres.extraParams }}{{ $k }}={{ $v }}&{{ end }}
         {{- with .Values.config.gitOwners }}
-        - --git-owners={{ join . "," }}
+        - --git-owners={{ . | join "," }}
         {{- end }}
         - --resync-interval={{ .Values.config.resyncInterval }}
         - --log-level={{ .Values.config.logLevel }}
