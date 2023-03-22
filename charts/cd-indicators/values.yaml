@@ -2,7 +2,6 @@
 
 fullnameOverride:
 nameOverride:
-
 config:
   # gitOwners is an array of "organizations" from which indicators should be collected
   # leave empty to collect from all organizations found
@@ -13,13 +12,11 @@ config:
     logLevel: WARN
     # extraParams is a map of extra parameters used when connecting to postgres
     extraParams: {}
-      # sslmode: verify-ca
-      # pool_max_conns: 10
-
+    # sslmode: verify-ca
+    # pool_max_conns: 10
 jx:
   # whether to create a Release CRD when installing charts with Release CRDs included
   releaseCRD: true
-
 postgresql:
   useInternalInstance: true
   # see https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml for the postgresql values
@@ -28,7 +25,6 @@ postgresql:
   postgresqlDatabase: indicators
   postgresqlUsername: postgres
   postgresqlPassword: password
-
 # this is the label defined in Grafana sidecar dashboards/datasources loader
 # used to retrieve all configmaps which contains Grafana dashboards/datasources
 grafana:
@@ -47,7 +43,6 @@ grafana:
         maxIdleConns: 2
         connMaxLifetime: 14400
         postgresVersion: 1200
-
 secrets:
   lighthouse:
     hmac:
@@ -59,19 +54,16 @@ secrets:
       secretKeyRef:
         name:
         key: postgresql-password
-
 image:
-  repository: gcr.io/jenkinsxio/cd-indicators
+  repository: ghcr.io/jenkins-x/cd-indicators
   # If no tag, fallback to the Chart's AppVersion
-  tag:
+  tag: 0.0.15
   pullPolicy:
-
 deployment:
   replicas: 1
   revisionHistoryLimit: 2
   labels: {}
   annotations: {}
-
 pod:
   resources:
     requests:
@@ -93,19 +85,16 @@ pod:
   securityContext:
     fsGroup: 1000
   env: {}
-
 service:
   port: 80
   type:
   loadBalancerIP:
   labels: {}
   annotations: {}
-
 serviceAccount:
   # allow additional annotations to be added to the ServiceAccount
   # such as for workload identity on clouds
   annotations: {}
-
 role:
   rules:
   - apiGroups: ["jenkins.io"]
