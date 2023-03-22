@@ -1983,7 +1983,7 @@
                     "group": [],
                     "metricColumn": "repository",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time) AND owner='$owner' AND repository='$repository'\nORDER BY metric ASC",
+                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time) AND owner='$owner' AND repository='$repository'\nORDER BY \"time\", metric ASC",
                     "refId": "A",
                     "select": [
                         [
@@ -2283,7 +2283,7 @@
                 "multi": false,
                 "name": "owner",
                 "options": [],
-                "query": "",
+                "query": "select distinct(owner) from pipelines WHERE $__timeFilter(start_time)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
