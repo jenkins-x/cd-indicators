@@ -14,7 +14,7 @@ spec:
           image: uses:jenkins-x/jx3-pipeline-catalog/tasks/go-plugin/pullrequest.yaml@versionStream
           name: ""
           resources:
-              limit: {}
+            limits: {}
           workingDir: /workspace/source
         steps:
         - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream

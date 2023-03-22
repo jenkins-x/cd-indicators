@@ -1684,7 +1684,7 @@
                     "group": [],
                     "metricColumn": "repository",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time)\nORDER BY metric ASC",
+                    "rawSql": "SELECT\n  start_time AS \"time\",\n  context AS metric,\n  duration\nFROM pipelines\nWHERE\n  $__timeFilter(start_time)\nORDER BY \"time\", metric ASC",
                     "refId": "A",
                     "select": [
                         [
