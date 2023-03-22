@@ -10,5 +10,5 @@ sources:
 dependencies:
 - name: postgresql
   version: 10.3.13
-  repository: https://charts.bitnami.com/bitnami
+  repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
   condition: postgresql.useInternalInstance
