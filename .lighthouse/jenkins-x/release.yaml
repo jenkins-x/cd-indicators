@@ -33,8 +33,6 @@ spec:
           resources: {}
         - name: release-chart
           resources: {}
-        - name: upload-binaries
-          resources: {}
         - name: promote-release
           resources: {}
   serviceAccountName: tekton-bot
