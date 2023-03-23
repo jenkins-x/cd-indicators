@@ -262,7 +262,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment LIKE 'stag%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
+                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment ilike 'stag%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
                     "refId": "A",
                     "select": [
                         [
@@ -394,7 +394,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment LIKE 'prod%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
+                    "rawSql": "SELECT\n  version,\n  extract (epoch from now() - deployment_time) as relative_deployment_time\nFROM\n  deployments\nWHERE\n  owner='$owner' AND repository='$repository' AND environment ilike 'prod%'\nORDER by deployment_time DESC\nLIMIT 1;\n",
                     "refId": "A",
                     "select": [
                         [
@@ -491,7 +491,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "WITH deployed_releases AS (\n\tselect \n\t  d.owner,\n\t\td.repository,\n\t\tmax(string_to_array(d.version, '.')::int[]) as version,\n\t\tmax(r.release_time) as release_time,\n\t\tmax(d.deployment_time) as deployment_time\n\tfrom\n\t\tdeployments d\n\tleft join\n\t\treleases r\n\ton r.version = d.version\n\twhere d.environment like 'prod%'\n\tgroup by d.owner, d.repository\n\torder by owner, repository asc\n\t)\nSELECT\n\tr.repository,\n\tcount(r.version) as version\nFROM\n\treleases r,\n\tdeployed_releases d\nWHERE\n  r.owner = d.owner AND\n  r.owner='$owner' AND\n\tr.repository = d.repository AND\n\tr.repository='$repository' AND\n\tr.release_time > d.release_time\nGROUP BY r.owner, r.repository\nORDER BY r.owner, r.repository;",
+                    "rawSql": "WITH deployed_releases AS (\n\tselect \n\t  d.owner,\n\t\td.repository,\n\t\tmax(string_to_array(d.version, '.')::int[]) as version,\n\t\tmax(r.release_time) as release_time,\n\t\tmax(d.deployment_time) as deployment_time\n\tfrom\n\t\tdeployments d\n\tleft join\n\t\treleases r\n\ton r.version = d.version\n\twhere d.environment ilike 'prod%'\n\tgroup by d.owner, d.repository\n\torder by owner, repository asc\n\t)\nSELECT\n\tr.repository,\n\tcount(r.version) as version\nFROM\n\treleases r,\n\tdeployed_releases d\nWHERE\n  r.owner = d.owner AND\n  r.owner='$owner' AND\n\tr.repository = d.repository AND\n\tr.repository='$repository' AND\n\tr.release_time > d.release_time\nGROUP BY r.owner, r.repository\nORDER BY r.owner, r.repository;",
                     "refId": "A",
                     "select": [
                         [
@@ -1271,7 +1271,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "WITH r AS (\n\tselect \n\t\tcount(version) as releases\n\tfrom\n\t\treleases\n\twhere $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'\n\t),\n\td AS (\n\tselect\n\t\tcount(distinct(version)) as deployed_releases\n\tfrom\n\t\tdeployments\n\twhere environment like 'prod%' AND $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository'\n\t)\nSELECT\n\td.deployed_releases::float/r.releases::float as ratio\nFROM\n\tr, d;",
+                    "rawSql": "WITH r AS (\n\tselect \n\t\tcount(version) as releases\n\tfrom\n\t\treleases\n\twhere $__timeFilter(release_time) AND owner='$owner' AND repository='$repository'\n\t),\n\td AS (\n\tselect\n\t\tcount(distinct(version)) as deployed_releases\n\tfrom\n\t\tdeployments\n\twhere environment ilike 'prod%' AND $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository'\n\t)\nSELECT\n\td.deployed_releases::float/r.releases::float as ratio\nFROM\n\tr, d;",
                     "refId": "A",
                     "select": [
                         [
@@ -1521,7 +1521,7 @@
                     ],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "WITH one AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tlag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS previous_deployment_time,\n\t\tdeployment_time - lag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS diff\n\tFROM deployments\n\t),\n\ttwo AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tcase when extract (epoch from diff) > 0 then extract (epoch from diff) else 0 end as diff_seconds\n\tFROM one\n\t)\nSELECT\n  percentile_cont(0.5) WITHIN GROUP (ORDER BY diff_seconds) as median,\n  stddev_pop(diff_seconds) as stddev\nFROM two\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment like 'prod%'",
+                    "rawSql": "WITH one AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tlag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS previous_deployment_time,\n\t\tdeployment_time - lag(deployment_time) OVER (ORDER BY owner, repository, environment, deployment_time) AS diff\n\tFROM deployments\n\t),\n\ttwo AS (\n\tSELECT\n\t  owner,\n\t\trepository,\n\t\tenvironment,\n\t\tdeployment_time,\n\t\tcase when extract (epoch from diff) > 0 then extract (epoch from diff) else 0 end as diff_seconds\n\tFROM one\n\t)\nSELECT\n  percentile_cont(0.5) WITHIN GROUP (ORDER BY diff_seconds) as median,\n  stddev_pop(diff_seconds) as stddev\nFROM two\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment ilike 'prod%'",
                     "refId": "A",
                     "select": [
                         [
@@ -1612,7 +1612,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment LIKE 'stag%'\n",
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment ilike 'stag%'\n",
                     "refId": "A",
                     "select": [
                         [
@@ -1717,7 +1717,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment LIKE 'prod%'\n",
+                    "rawSql": "SELECT\n  count(1)\nFROM\n  deployments\nWHERE\n  $__timeFilter(deployment_time) AND owner='$owner' AND repository='$repository' AND environment ilike 'prod%'\n",
                     "refId": "A",
                     "select": [
                         [
