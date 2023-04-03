@@ -199,7 +199,7 @@
                     "metricColumn": "none",
                     "queryType": "randomWalk",
                     "rawQuery": true,
-                    "rawSql": "WITH deployed_releases AS (\n\tselect \n\t\td.repository,\n\t\tmax(string_to_array(d.version, '.')::int[]) as version,\n\t\tmax(r.release_time) as release_time,\n\t\tmax(d.deployment_time) as deployment_time\n\tfrom\n\t\tdeployments d\n\tleft join\n\t\treleases r\n\ton r.version = d.version\n\twhere d.environment ilike 'prod%'\n\tgroup by d.repository\n\torder by repository asc\n\t)\nSELECT\n  r.release_time as \"time\",\n\tr.repository as metric,\n\tcount(r.version) as version\nFROM\n\treleases r,\n\tdeployed_releases d\nWHERE\n\tr.repository = d.repository AND\n\tr.release_time > d.release_time\nGROUP BY 1,2\nORDER BY metric ASC;",
+                    "rawSql": "WITH deployed_releases AS (\n\tselect \n\t\td.repository,\n\t\tmax(string_to_array(d.version, '.')::int[]) as version,\n\t\tmax(r.release_time) as release_time,\n\t\tmax(d.deployment_time) as deployment_time\n\tfrom\n\t\tdeployments d\n\tleft join\n\t\treleases r\n\ton r.version = d.version\n\twhere d.environment ilike 'prod%'\n\tgroup by d.repository\n\torder by repository asc\n\t)\nSELECT\n  r.release_time as \"time\",\n\tr.repository as metric,\n\tcount(r.version) as version\nFROM\n\treleases r,\n\tdeployed_releases d\nWHERE\n\tr.repository = d.repository AND\n\tr.release_time > d.release_time\nGROUP BY 1,2\nORDER BY \"time\", metric ASC;",
                     "refId": "A",
                     "select": [
                         [
