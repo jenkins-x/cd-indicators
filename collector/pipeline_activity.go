@@ -95,32 +95,24 @@ func (c *PipelineActivityCollector) storePipeline(pa *jenkinsv1.PipelineActivity
 	for _, step := range pa.Spec.Steps {
 		//trace log number of steps that are simplified
 		log.WithField("step", step.Kind).Trace("Simplifying step")
-		if step.Kind == "Preview" {
-			simplifiedStep := SimplifyStep(step.Preview.CoreActivityStep)
-			if simplifiedStep.Name == "" {
-				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
-				continue
-			}
-			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
-		}
-		if step.Kind == "Promote" {
-			simplifiedStep := SimplifyStep(step.Promote.CoreActivityStep)
-			if simplifiedStep.Name == "" {
-				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
-				continue
-			}
-			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
-		}
 		if step.Kind == "Stage" {
-			simplifiedStep := SimplifyStep(step.Stage.CoreActivityStep)
-			if simplifiedStep.Name == "" {
-				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
-				continue
+			for _, stageStep := range step.Stage.Steps {
+
+				simplifiedStep := SimplifyStep(stageStep)
+				if simplifiedStep.Name == "" {
+					log.WithField("step", step.Kind).Trace("Ignoring step with no name")
+				} else {
+					// log description
+					log.WithField("step", step.Kind).WithField("description", step.Stage.Description).Trace("Simplifying step")
+
+					simplifiedSteps = append(simplifiedSteps, simplifiedStep)
+				}
 			}
-			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
 		}
 	}
 
+	// print length of simplified steps
+	log.WithField("steps", len(simplifiedSteps)).Trace("Simplified steps")
 	pipeline := store.Pipeline{
 		Owner:      pa.Spec.GitOwner,
 		Repository: pa.Spec.GitRepository,
