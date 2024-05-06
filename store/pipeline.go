@@ -12,6 +12,13 @@ import (
 
 type PipelineType string
 
+type SimplifiedActivityStep struct {
+	Name               string
+	Status             string
+	StartedTimestamp   time.Time
+	CompletedTimestamp time.Time
+}
+
 const (
 	PipelineTypeRelease     = PipelineType("release")
 	PipelineTypePullRequest = PipelineType("pullrequest")
@@ -29,6 +36,7 @@ type Pipeline struct {
 	StartTime   time.Time
 	EndTime     time.Time
 	Duration    time.Duration
+	Steps       []SimplifiedActivityStep
 }
 
 type PipelineStore struct {
@@ -56,6 +64,24 @@ func (s *PipelineStore) Migrations() []migration.Func {
 				duration bigint NOT NULL,
 				CONSTRAINT pipeline_pkey PRIMARY KEY (type, owner, repository, pull_request, context, build)
 			);
+			CREATE TABLE pipelinesactivity (
+				type VARCHAR NOT NULL,
+				owner VARCHAR NOT NULL,
+				repository VARCHAR NOT NULL,
+				pull_request int,
+				context VARCHAR NOT NULL,
+				build int NOT NULL,
+				status VARCHAR NOT NULL,
+				author VARCHAR,
+				start_time timestamp without time zone NOT NULL,
+				end_time timestamp without time zone NOT NULL,
+				duration bigint NOT NULL,
+				step_name VARCHAR NOT NULL,
+				step_status VARCHAR NOT NULL,
+				step_started_time timestamp without time zone NOT NULL,
+				step_completed_time timestamp without time zone NOT NULL,
+				CONSTRAINT pipelineactivity_pkey PRIMARY KEY (type, owner, repository, pull_request, context, build, step_name)
+			);
 		`),
 	}
 }
@@ -74,6 +100,13 @@ func (s *PipelineStore) Add(ctx context.Context, p Pipeline) error {
 		return fmt.Errorf("failed to add pipeline: %w", err)
 	}
 
+	// Insert steps
+	for _, step := range p.Steps {
+		_, err = tx.Exec(ctx, "INSERT INTO pipelinesactivity (type, owner, repository, pull_request, context, build, status, author, start_time, end_time, duration, step_name, step_status, step_started_time, step_completed_time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) ON CONFLICT DO NOTHING;", p.Type, p.Owner, p.Repository, p.PullRequest, p.Context, p.Build, p.Status, p.Author, p.StartTime, p.EndTime, p.Duration.Seconds(), step.Name, step.Status, step.StartedTimestamp, step.CompletedTimestamp)
+		if err != nil {
+			return fmt.Errorf("failed to add pipeline step: %w", err)
+		}
+	}
 	if err = tx.Commit(ctx); err != nil {
 		return fmt.Errorf("failed to commit insertion of pipeline: %w", err)
 	}

@@ -48,7 +48,19 @@ func (c *PipelineActivityCollector) Start(ctx context.Context) error { // nolint
 
 	return nil
 }
+func SimplifyStep(coreStep jenkinsv1.CoreActivityStep) store.SimplifiedActivityStep {
+	// check if status is empty or if the timestamps are empty
+	if coreStep.Status == "" || coreStep.StartedTimestamp == nil || coreStep.CompletedTimestamp == nil {
+		return store.SimplifiedActivityStep{}
+	}
 
+	return store.SimplifiedActivityStep{
+		Name:               coreStep.Name,
+		Status:             coreStep.Status.String(),
+		StartedTimestamp:   coreStep.StartedTimestamp.Time,
+		CompletedTimestamp: coreStep.CompletedTimestamp.Time,
+	}
+}
 func (c *PipelineActivityCollector) storePipeline(pa *jenkinsv1.PipelineActivity) {
 	if pa == nil {
 		return
@@ -79,6 +91,36 @@ func (c *PipelineActivityCollector) storePipeline(pa *jenkinsv1.PipelineActivity
 		return
 	}
 
+	var simplifiedSteps []store.SimplifiedActivityStep
+	for _, step := range pa.Spec.Steps {
+		//trace log number of steps that are simplified
+		log.WithField("step", step.Kind).Trace("Simplifying step")
+		if step.Kind == "Preview" {
+			simplifiedStep := SimplifyStep(step.Preview.CoreActivityStep)
+			if simplifiedStep.Name == "" {
+				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
+				continue
+			}
+			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
+		}
+		if step.Kind == "Promote" {
+			simplifiedStep := SimplifyStep(step.Promote.CoreActivityStep)
+			if simplifiedStep.Name == "" {
+				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
+				continue
+			}
+			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
+		}
+		if step.Kind == "Stage" {
+			simplifiedStep := SimplifyStep(step.Stage.CoreActivityStep)
+			if simplifiedStep.Name == "" {
+				log.WithField("step", step.Kind).Trace("Ignoring step with no name")
+				continue
+			}
+			simplifiedSteps = append(simplifiedSteps, simplifiedStep)
+		}
+	}
+
 	pipeline := store.Pipeline{
 		Owner:      pa.Spec.GitOwner,
 		Repository: pa.Spec.GitRepository,
@@ -87,6 +129,7 @@ func (c *PipelineActivityCollector) storePipeline(pa *jenkinsv1.PipelineActivity
 		Author:     pa.Spec.Author,
 		StartTime:  pa.Spec.StartedTimestamp.Time.In(time.UTC),
 		EndTime:    pa.Spec.CompletedTimestamp.Time.In(time.UTC),
+		Steps:      simplifiedSteps,
 	}
 	pipeline.Duration = pipeline.EndTime.Sub(pipeline.StartTime)
 
