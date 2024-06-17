@@ -65,6 +65,8 @@ func (s *PipelineStore) Migrations() []migration.Func {
 				duration bigint NOT NULL,
 				CONSTRAINT pipeline_pkey PRIMARY KEY (type, owner, repository, pull_request, context, build)
 			);
+			
+		`), migration.ExecSQLFunc(`
 			CREATE TABLE pipelinesteps (
 				type VARCHAR NOT NULL,
 				owner VARCHAR NOT NULL,
