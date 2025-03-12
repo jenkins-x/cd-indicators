@@ -8,6 +8,7 @@ spec:
     tasks:
     - name: chart
       resources: {}
+      timeout: 4h0m0s
       taskSpec:
         metadata: {}
         stepTemplate:
@@ -36,5 +37,5 @@ spec:
         - name: promote-release
           resources: {}
   serviceAccountName: tekton-bot
-  timeout: 240h0m0s
+  timeout: 4h0m0s
 status: {}

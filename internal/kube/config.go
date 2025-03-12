@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/mitchellh/go-homedir"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -34,7 +33,7 @@ func DefaultKubeConfigPath() string {
 		return kubeconfig
 	}
 
-	home, _ := homedir.Dir()
+	home, _ := os.UserHomeDir()
 	if len(home) > 0 {
 		return filepath.Join(home, ".kube", "config")
 	}

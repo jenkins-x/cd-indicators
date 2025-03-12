@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/jenkins-x/go-scm/scm"
-	lhv1alpha1 "github.com/jenkins-x/lighthouse/pkg/apis/lighthouse/v1alpha1"
-	lhutil "github.com/jenkins-x/lighthouse/pkg/util"
+	lhv1alpha1 "github.com/jenkins-x/lighthouse-client/pkg/apis/lighthouse/v1alpha1"
+	lhutil "github.com/jenkins-x/lighthouse-client/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
