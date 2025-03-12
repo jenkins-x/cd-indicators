@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5/tracelog"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/log/logrusadapter"
-	"github.com/jackc/pgx/v4/pgxpool"
+	logrusadapter "github.com/jackc/pgx-logrus"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jenkins-x/cd-indicators/collector"
 	"github.com/jenkins-x/cd-indicators/internal/kube"
 	"github.com/jenkins-x/cd-indicators/internal/lighthouse"
@@ -46,7 +46,7 @@ func init() {
 	pflag.StringVar(&options.lighthouseHMACKey, "lighthouse-hmac-key", os.Getenv("LIGHTHOUSE_HMAC_KEY"), "HMAC key used by Lighthouse to sign the webhooks")
 	pflag.StringVar(&options.listenAddr, "listen-addr", ":8080", "Address on which the HTTP server will listen for incoming connections")
 	pflag.StringVar(&options.logLevel, "log-level", "INFO", "Log level - one of: trace, debug, info, warn(ing), error, fatal or panic")
-	pflag.StringVar(&options.logLevelForPostgres, "log-level-db", "WARN", "Log level for the database operations - one of: trace, debug, info, warn(ing), error, fatal or panic")
+	pflag.StringVar(&options.logLevelForPostgres, "log-level-db", "WARN", "Log level for the database operations - one of: trace, debug, info, warn, error or none")
 	pflag.StringVar(&options.kubeConfigPath, "kubeconfig", kube.DefaultKubeConfigPath(), "Kubernetes Config Path. Default: KUBECONFIG env var value")
 	pflag.BoolVar(&options.printVersion, "version", false, "Print the version")
 }
@@ -84,12 +84,12 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("Failed to parse postgresURI")
 	}
-	dbconf.ConnConfig.Logger = logrusadapter.NewLogger(logger)
-	dbconf.ConnConfig.LogLevel, err = pgx.LogLevelFromString(strings.ToLower(options.logLevelForPostgres))
+	pgLogLevel, err := tracelog.LogLevelFromString(strings.ToLower(options.logLevelForPostgres))
 	if err != nil {
 		logger.WithField("logLevel", strings.ToLower(options.logLevelForPostgres)).WithError(err).Fatal("Invalid log level for database operations")
 	}
-	dbpool, err := pgxpool.ConnectConfig(ctx, dbconf)
+	dbconf.ConnConfig.Tracer = &tracelog.TraceLog{Logger: logrusadapter.NewLogger(logger), LogLevel: pgLogLevel}
+	dbpool, err := pgxpool.NewWithConfig(ctx, dbconf)
 	if err != nil {
 		logger.WithError(err).Fatal("Failed to connect to database")
 	}
