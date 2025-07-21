@@ -21,6 +21,9 @@ jx:
   releaseCRD: true
 
 postgresql:
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 13.1.0
   useInternalInstance: true
   # see https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml for the postgresql values
   postgresqlHost:
