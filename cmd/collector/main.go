@@ -77,7 +77,7 @@ func main() {
 	}
 	jxClient, err := jxclientset.NewForConfig(kConfig)
 	if err != nil {
-		logger.WithError(err).Fatal("failed to create a Jenkins X client")
+		logger.WithError(err).Fatal("failed to create a JayeX client")
 	}
 
 	dbconf, err := pgxpool.ParseConfig(options.postgresURI)
