@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cd-indicators
-description: Continuous Delivery Indicators for Jenkins X
+description: Continuous Delivery Indicators for JayeX
 icon: https://raw.githubusercontent.com/jenkins-x/jenkins-x-website/master/images/logo/jenkinsx-icon-color.svg
 home: https://github.com/jenkins-x/cd-indicators
 version: 0.0.1

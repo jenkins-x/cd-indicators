@@ -154,7 +154,7 @@
             "interval": null,
             "links": [],
             "options": {
-                "content": "# Continuous Delivery Indicators for Jenkins X\n\n- [GitHub repository](https://github.com/jenkins-x/cd-indicators)\n\n",
+                "content": "# Continuous Delivery Indicators for JayeX\n\n- [GitHub repository](https://github.com/jenkins-x/cd-indicators)\n\n",
                 "mode": "markdown"
             },
             "pluginVersion": "7.4.3",
